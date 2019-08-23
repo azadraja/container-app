@@ -1,26 +1,34 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import MicroFrontend from './MicroFrontend';
 import './App.css';
+import AppHeader from './AppHeader';
+
+const { 
+  REACT_APP_INAPP_HOST: inAppHost,
+  REACT_APP_BROWSE_HOST: browseHost,
+ } = process.env;
+
+const InApp = ({ history }) => (
+  <MicroFrontend history={history} host={inAppHost} name="InApp" />
+);
+
+const Browse = ({ history }) => (
+  <MicroFrontend history={history} host={browseHost} name="Browse" />
+);
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+  <BrowserRouter>
+      <React.Fragment>
+        <AppHeader />
+        <Switch>
+          <Route exact path="/" component={InApp} />
+          <Route exact path="/browse" component={Browse} />
+        </Switch>
+      </React.Fragment>
+  </BrowserRouter>
     );
   }
 }
